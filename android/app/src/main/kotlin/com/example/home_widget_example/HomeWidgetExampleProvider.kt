@@ -22,22 +22,23 @@ class HomeWidgetExampleProvider : HomeWidgetProvider() {
 
                 // Swap Title Text by calling Dart Code in the Background
                 setTextViewText(R.id.widget_title, widgetData.getString("title", null)
-                        ?: "No Title Set")
-                val backgroundIntent = HomeWidgetBackgroundIntent.getBroadcast(
-                        context,
-                        Uri.parse("homeWidgetExample://titleClicked")
-                )
-                setOnClickPendingIntent(R.id.widget_title, backgroundIntent)
+                        ?: "“Quote of the Day”")
+                // val backgroundIntent = HomeWidgetBackgroundIntent.getBroadcast(
+                //         context,
+                //         Uri.parse("homeWidgetExample://titleClicked")
+                // )
+                // setOnClickPendingIntent(R.id.widget_title, backgroundIntent)
 
                 val message = widgetData.getString("message", null)
                 setTextViewText(R.id.widget_message, message
-                        ?: "No Message Set")
-                // Detect App opened via Click inside Flutter
-                val pendingIntentWithData = HomeWidgetLaunchIntent.getActivity(
-                        context,
-                        MainActivity::class.java,
-                        Uri.parse("homeWidgetExample://message?message=$message"))
-                setOnClickPendingIntent(R.id.widget_message, pendingIntentWithData)
+                        ?: "Author")
+
+                // // Detect App opened via Click inside Flutter
+                // val pendingIntentWithData = HomeWidgetLaunchIntent.getActivity(
+                //         context,
+                //         MainActivity::class.java,
+                //         Uri.parse("homeWidgetExample://message?message=$message"))
+                // setOnClickPendingIntent(R.id.widget_message, pendingIntentWithData)
             }
 
             appWidgetManager.updateAppWidget(widgetId, views)

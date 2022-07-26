@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="8dp" android:orientation="vertical" android:background="@drawable/widget_background" android:padding="8dp" android:id="@+id/widget_container">
+    xmlns:tools="http://schemas.android.com/tools" android:alpha="0.8" android:gravity="center" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="8dp" android:orientation="vertical" android:background="@drawable/widget_background" android:padding="3dp" android:id="@+id/widget_container">
 
-    <TextView android:id="@+id/widget_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="22sp" android:textStyle="bold" android:gravity="center" android:textSize="40dp" android:padding="50dp" tools:text="Title" />
+    <TextView android:id="@+id/widget_title" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="17sp" android:gravity="center" android:padding="20dp" android:textColor="#FFFFFF" android:fontFamily="@font/baimedium" tools:text="Title" />
 
-    <TextView android:id="@+id/widget_message" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold" android:gravity="center" android:textSize="40dp" android:padding="50dp" tools:text="Message" />
+    <TextView android:id="@+id/widget_message" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textStyle="italic" android:gravity="center" android:textColor="#FFFFFF" android:fontFamily="@font/bairegular" tools:text="Message" />
+
+    <!-- <ImageView android:id="@+id/widget_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@mipmap/ic_launcher" /> -->
+
 </LinearLayout>

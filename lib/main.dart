@@ -8,17 +8,17 @@ import 'package:home_widget/home_widget.dart';
 import 'package:workmanager/workmanager.dart';
 
 /// Used for Background Updates using Workmanager Plugin
+// Main function to run periodically
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) {
-    final now = DateTime.now();
     return Future.wait<bool>([
       HomeWidget.saveWidgetData(
         'title',
-        'Updated from Background',
+        '“updated routine, Quote of the day”',
       ),
       HomeWidget.saveWidgetData(
         'message',
-        '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}',
+        'Updated routine, Author',
       ),
       HomeWidget.updateWidget(
         name: 'HomeWidgetExampleProvider',
@@ -43,51 +43,52 @@ void backgroundCallback(Uri data) async {
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(callbackDispatcher,
-      isInDebugMode: kDebugMode); //* release mode
-  runApp(MaterialApp(home: MyApp()));
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: kDebugMode,
+  ); //* release mode
+
+  runApp(
+    MaterialApp(
+      home: const MyApp(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Nunito'),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _messageController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
-    HomeWidget.setAppGroupId('MOTIVATIONAL_QUOTES_APP_ID');
+    HomeWidget.setAppGroupId('QUOTES_APP_ID');
     HomeWidget.registerBackgroundCallback(backgroundCallback);
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkForWidgetLaunch();
-    HomeWidget.widgetClicked.listen(_launchedFromWidget);
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _checkForWidgetLaunch();
+  //   HomeWidget.widgetClicked.listen(_launchedFromWidget);
+  // }
 
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _messageController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _sendData() async {
+  Future<void> _sendData(String title, String message) async {
     try {
       return Future.wait([
         HomeWidget.saveWidgetData<String>(
           'title',
-          "Don't be tempted to break momentum-work through it.",
+          '“$title”',
         ),
         HomeWidget.saveWidgetData<String>(
           'message',
-          "Lorii Myers",
+          message,
         ),
       ]);
     } on PlatformException catch (exception) {
@@ -104,59 +105,54 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  Future<void> _loadData() async {
-    try {
-      return Future.wait([
-        HomeWidget.getWidgetData<String>('title', defaultValue: 'Default Title')
-            .then((value) {
-          print(value);
-          _titleController.text = value;
-        }),
-        HomeWidget.getWidgetData<String>('message',
-                defaultValue: 'Default Message')
-            .then((value) {
-          print(value);
-          _messageController.text = value;
-        }),
-      ]);
-    } on PlatformException catch (exception) {
-      debugPrint('Error Getting Data. $exception');
-    }
-  }
+  // Future<void> _loadData() async {
+  //   try {
+  //     return Future.wait([
+  //       HomeWidget.getWidgetData<String>('title', defaultValue: 'Default Title')
+  //           .then((value) {
+  //         print(value);
+  //       }),
+  //       HomeWidget.getWidgetData<String>('message',
+  //               defaultValue: 'Default Message')
+  //           .then((value) {
+  //         print(value);
+  //       }),
+  //     ]);
+  //   } on PlatformException catch (exception) {
+  //     debugPrint('Error Getting Data. $exception');
+  //   }
+  // }
 
-  Future<void> _sendAndUpdate() async {
-    await _sendData();
+  Future<void> _sendAndUpdate(String title, String message) async {
+    await _sendData(title, message);
     await _updateWidget();
   }
 
-  void _checkForWidgetLaunch() {
-    HomeWidget.initiallyLaunchedFromHomeWidget().then(_launchedFromWidget);
-  }
+  // void _checkForWidgetLaunch() {
+  //   HomeWidget.initiallyLaunchedFromHomeWidget().then(_launchedFromWidget);
+  // }
 
-  void _launchedFromWidget(Uri uri) {
-    if (uri != null) {
-      showDialog(
-        context: context,
-        builder: (buildContext) => AlertDialog(
-          title: Text('App started from HomeScreenWidget'),
-          content: Text('Here is the URI: $uri'),
-        ),
-      );
-    } else {
-      print('No widget found');
-    }
-  }
+  // void _launchedFromWidget(Uri uri) {
+  //   if (uri != null) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (buildContext) => AlertDialog(
+  //         title: const Text('App started from HomeScreenWidget'),
+  //         content: Text('Here is the URI: $uri'),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _startBackgroundUpdate() {
     Workmanager().registerPeriodicTask(
-      'quotes_app_1',
-      'MotivationalQuoteswidgetBackgroundUpdate',
-      frequency: Duration(minutes: 2),
-    );
+        'motivational_quotes_app_1', 'BackgroundUpdate',
+        frequency: const Duration(hours: 12),
+        initialDelay: const Duration(seconds: 10));
   }
 
   void _stopBackgroundUpdate() {
-    Workmanager().cancelByUniqueName('quotes_app_1');
+    Workmanager().cancelByUniqueName('motivational_quotes_app_1');
   }
 
   @override
@@ -171,30 +167,16 @@ class _MyAppState extends State<MyApp> {
           padding: const EdgeInsets.all(20.0),
           child: Center(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Title',
-                  ),
-                  controller: _titleController,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Body',
-                  ),
-                  controller: _messageController,
-                ),
                 ElevatedButton(
-                  onPressed: _sendAndUpdate,
+                  onPressed: () {
+                    _sendAndUpdate(
+                      "Don't be tempted to break momentum-work through it.",
+                      "Lorii Myers",
+                    );
+                  },
                   child: Text('Send Data to Widget'),
-                ),
-                ElevatedButton(
-                  onPressed: _loadData,
-                  child: Text('Load Data'),
-                ),
-                ElevatedButton(
-                  onPressed: _checkForWidgetLaunch,
-                  child: Text('Check For Widget Launch'),
                 ),
                 if (Platform.isAndroid)
                   ElevatedButton(

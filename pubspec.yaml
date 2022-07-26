@@ -17,10 +17,67 @@ dependencies:
       ref: f37742bcf612c51e9571d623138a21a90a5992ea
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.9.3
   flutter_lints: ^2.0.1
+  flutter_native_splash: ^2.2.4
   flutter_test:
     sdk: flutter
-  integration_test:
-    sdk: flutter
 
-flutter: null
+flutter_native_splash:
+  image: assets/images/splash_logo_transparent.png
+  background_image: assets/images/splash_background.png
+
+flutter_icons:
+  android: true
+  image_path_ios: "assets/images/new_logo.png"
+  image_path_android: "assets/images/new_logo.png"
+  adaptive_icon_background: "assets/images/background.png"
+  adaptive_icon_foreground: "assets/images/new_logo_transparent.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Nunito-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Nunito-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Nunito-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
+          weight: 800
+    - family: Bai
+      fonts:
+        - asset: assets/fonts/BaiJamjuree-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/BaiJamjuree-Light.ttf
+          weight: 300
+        - asset: assets/fonts/BaiJamjuree-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/BaiJamjuree-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/BaiJamjuree-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/BaiJamjuree-Bold.ttf
+          weight: 700
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/JetBrainsMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/JetBrainsMono-Bold.ttf
+          weight: 600
+        - asset: assets/fonts/JetBrainsMono-ExtraBold.ttf
+          weight: 700
